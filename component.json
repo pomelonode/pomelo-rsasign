@@ -14,11 +14,7 @@
     "lib/core.js",
     "lib/crypto-1.0.js",
     "lib/jsbn.js",
-    "lib/jsbn2.js",
     "lib/rsa.js",
-    "lib/rsa2.js",
-    "lib/rsapem-1.1.js",
-    "lib/rsasign-1.2.js",
     "lib/sha256.js"
   ],
   "repo": "https://github.com/pomelonode/pomelo-rsasign"
