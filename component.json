@@ -7,6 +7,7 @@
     "signature"
   ],
   "version": "0.0.1",
+  "main": "lib/rsa.js",
   "scripts": [
     "lib/asn1hex-1.1.js",
     "lib/base64.js",
