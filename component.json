@@ -9,13 +9,11 @@
   "version": "0.0.1",
   "main": "lib/rsa.js",
   "scripts": [
-    "lib/asn1hex-1.1.js",
-    "lib/base64.js",
-    "lib/core.js",
-    "lib/crypto-1.0.js",
+    "lib/b64.js",
     "lib/jsbn.js",
     "lib/rsa.js",
-    "lib/sha256.js"
+    "lib/asn1hex-1.1.js",
+    "lib/rng.js"
   ],
   "repo": "https://github.com/pomelonode/pomelo-rsasign"
 }
