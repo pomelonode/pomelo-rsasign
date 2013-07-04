@@ -1,0 +1,307 @@
+<html>
+
+<head>
+
+<title>Sample Application for RSA signing in JavaScript</title>
+
+<script language="JavaScript" type="text/javascript" src="lib/jsbn.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/jsbn2.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/rsa.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/rsa2.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/base64.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/core.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/sha256.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/rsapem-1.1.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/rsasign-1.2.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/asn1hex-1.1.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="lib/crypto-1.0.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+
+function doSign() {
+
+  var rsa = new RSAKey();
+
+  rsa.readPrivateKeyFromPEMString(document.form1.prvkey1.value);
+
+  console.log(document.form1.prvkey1.value);
+
+  var hSig = rsa.signString(document.form1.msgsigned.value, 'sha256');
+
+  document.form1.siggenerated.value = linebrk(hSig, 64);
+
+}
+
+/**
+
+function doVerify() {
+
+  var sMsg = document.form1.msgverified.value;
+
+  var hSig = document.form1.sigverified.value;
+
+
+
+  var x509 = new X509();
+
+  x509.readCertPEM(document.form1.cert.value);
+
+  var isValid = x509.subjectPublicKeyRSA.verifyString(sMsg, hSig);
+
+
+
+  // display verification result
+
+  if (isValid) {
+
+    _displayStatus("valid");
+
+  } else {
+
+    _displayStatus("invalid");
+
+  }
+
+}
+
+*/
+
+function copyMsgAndSig() {
+
+  _displayStatus("reset");
+
+  document.form1.msgverified.value = document.form1.msgsigned.value; 
+
+  document.form1.sigverified.value = document.form1.siggenerated.value; 
+
+}
+
+
+
+function _displayStatus(sStatus) {
+
+  var div1 = document.getElementById("verifyresult");
+
+  if (sStatus == "valid") {
+
+    div1.style.backgroundColor = "skyblue";
+
+    div1.innerHTML = "This signature is *VALID*.";
+
+  } else if (sStatus == "invalid") {
+
+    div1.style.backgroundColor = "deeppink";
+
+    div1.innerHTML = "This signature is *NOT VALID*.";
+
+  } else {
+
+    div1.style.backgroundColor = "yellow";
+
+    div1.innerHTML = "Please fill values below and push [Verify this sigunature] button.";
+
+  }
+
+}
+
+
+
+</script>
+
+<style type="text/css">
+
+TD  {vertical-align: top}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Sample Application for RSA signing in JavaScript</h1>
+
+
+
+<form name="form1">
+
+<table border="0">
+
+<tr><th>Signer</th><th></th><th>Verifier</th></tr>
+
+
+
+<tr>
+
+<td>
+
+PEM RSA Private Key<br/>
+
+<textarea name="prvkey1" rows="10" cols="65">
+
+-----BEGIN RSA PRIVATE KEY-----
+
+MIICXAIBAAKBgQDZD56clLQbGhg8NWkec3x/d+d9dCIRBrTjEsYxy64agx/6OSe9
+
+fns4jNuiN9Im5ZWdB6/9xc+DvEfodDu24LWR8Y5Qfs+f2OvLEvaib5pDDiw83Qrp
+
+ylovKqUul755z2tKqs1FHMZ0eeK5HVvSZCrealns+fLnxQUoc3AwvFz9DQIDAQAB
+
+AoGBALAfzWpt+qoXBV0tVWtA998SMsKHzfCUyYeKv0i+ZTnb9cF6SPWoQGGFYd2B
+
+f8LR/REaoMHAlP3mc055qc5dDNWtRanrPxWSrOgKwohmsZ3i1G6u/VyzIiQX4M/L
+
+2gtUnxfTSCUUpuoGkad3+wXhR4fIkaYJAywWGJz1AlNdNMVdAkEA8gvxcj7EFvgp
+
+V49/oFPq8iknk3v2FlJi0vKgrg4ULCVFXAJnHlFoh6ODKKcjdaWY3JtHx8Xh/wvs
+
+3xpn4+lwawJBAOWS8gKIgb6ZSCmMBpaX5bHyLaeCqIEi7fCuRrMGjKrajGFcUaim
+
+iE/L2GBKCDyh5CsmTf1w65kEGk0iDhz6xmcCQG7E2HIYF1ULrJ/No/KTdOntu5bb
+
+G/uLKH6xWqdM+h5Z0CwTTW2qg9PPGK76DlhAuHv89BSQkqRNqNFRHEpJApECQGfr
+
+RoWDCUgf1pyH+At/IsiUGbpz2JbsGs0R9orfchl86ILB6WzwRU/ptD6SBHx9w+0M
+
+X81TqjIPu2AjBER1+A0CQAeQ+CkdK8o1ciI6SVWKaDt4IpxCyI3HUSFdNUQiFSyJ
+
+oUSSb/NNxfUbn8gpkQuK+PNWAN4oR+4zbH/OqLKiDWQ=
+
+-----END RSA PRIVATE KEY-----
+
+</textarea><br/>
+
+Text message to be signed.<br/>
+
+<input type="text" name="msgsigned" size="100" value="aaa"/><br/>
+
+</td>
+
+<td></td>
+
+<td>
+
+Verification Result
+
+<div id="verifyresult" style="background: yellow">Please fill values below and push "Verify this sigunature" button.</div>
+
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+
+
+
+<input type="button" value="Sign to this message &darr;" onClick="doSign();"/><br/>
+
+</td>
+
+<td>
+
+<input type="button" value="Copy &rarr;" onClick="copyMsgAndSig();"/><br/>
+
+</td>
+
+<td>
+
+<!--
+
+<input type="button" value="Verify this signature &uarr;" onClick="doVerify();"/><br/>-->
+
+</td>
+
+</tr>
+
+
+
+<tr>
+
+<td>
+
+Generated Signature<br/>
+
+<textarea name="siggenerated" rows="4" cols="65"></textarea>
+
+</td>
+
+<td>
+
+</td>
+
+<td>
+
+Verifying Signature<br/>
+
+<textarea name="sigverified" rows="4" cols="65">
+
+6f7df91d8f973a0619d525c319337741130b77b21f9667dc7d1d74853b644cbe
+
+5e6b0e84aacc2faee883d43affb811fc653b67c38203d4f206d1b838c4714b6b
+
+2cf17cd621303c21bac96090df3883e58784a0576e501c10cdefb12b6bf887e5
+
+48f6b07b09ae80d8416151d7dab7066d645e2eee57ac5f7af2a70ee0724c8e47
+
+</textarea><br/>
+
+Text message to be verified.<br/>
+
+<input type="text" name="msgverified" size="100" value="aaa"/><br/>
+
+Signer's Public Key Certificate.<br/>
+
+<textarea name="cert" rows="10" cols="65">
+
+-----BEGIN CERTIFICATE-----
+
+MIIBvTCCASYCCQD55fNzc0WF7TANBgkqhkiG9w0BAQUFADAjMQswCQYDVQQGEwJK
+
+UDEUMBIGA1UEChMLMDAtVEVTVC1SU0EwHhcNMTAwNTI4MDIwODUxWhcNMjAwNTI1
+
+MDIwODUxWjAjMQswCQYDVQQGEwJKUDEUMBIGA1UEChMLMDAtVEVTVC1SU0EwgZ8w
+
+DQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBANGEYXtfgDRlWUSDn3haY4NVVQiKI9Cz
+
+Thoua9+DxJuiseyzmBBe7Roh1RPqdvmtOHmEPbJ+kXZYhbozzPRbFGHCJyBfCLzQ
+
+fVos9/qUQ88u83b0SFA2MGmQWQAlRtLy66EkR4rDRwTj2DzR4EEXgEKpIvo8VBs/
+
+3+sHLF3ESgAhAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAEZ6mXFFq3AzfaqWHmCy1
+
+ARjlauYAa8ZmUFnLm0emg9dkVBJ63aEqARhtok6bDQDzSJxiLpCEF6G4b/Nv/M/M
+
+LyhP+OoOTmETMegAVQMq71choVJyOFE5BtQa6M/lCHEOya5QUfoRF2HF9EjRF44K
+
+3OK+u3ivTSj3zwjtpudY5Xo=
+
+-----END CERTIFICATE-----
+
+</textarea><br/>
+
+</td>
+
+</tr>
+
+
+
+</table>
+
+</form>
+
+</body>
+
+</html>
